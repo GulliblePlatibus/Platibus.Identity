@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Test;
 using IdentityModel;
+using Platibus.Identity.Handlers;
 
 namespace Platibus.Identity
 {
@@ -34,7 +35,9 @@ namespace Platibus.Identity
 					.AddInMemoryApiResources(IdentityConfig.GetApiResources())
 					.AddInMemoryClients(IdentityConfig.GetClients())
 			        .AddTestUsers(IdentityConfig.GetUsers());
-                    
+
+            services.AddScoped<IUserHandler, UserHandler>();
+
 
         }
 

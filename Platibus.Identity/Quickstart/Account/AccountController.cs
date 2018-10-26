@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Platibus.Identity.Handlers;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -33,12 +34,14 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IUserHandler _userHandler;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
+            IUserHandler userHandler,
             TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -49,6 +52,7 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _userHandler = userHandler;
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace IdentityServer4.Quickstart.UI
                 }
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //TODO : The login is happening right here!
             {
                 // validate username/password against in-memory store
                 if (_users.ValidateCredentials(model.Username, model.Password))

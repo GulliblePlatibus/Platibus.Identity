@@ -24,4 +24,7 @@
     <None Include="wwwroot\css\site.min.css" />
     <None Include="Views\_ViewImports.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories" />
+  </ItemGroup>
 </Project>
