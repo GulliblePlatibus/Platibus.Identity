@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Platibus.Identity.CreateUserModels;
 using Platibus.Identity.Handlers;
-using Platibus.Identity.Repositories;
 
 namespace Platibus.Identity.Controllers
 {
@@ -18,11 +17,12 @@ namespace Platibus.Identity.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequestModel requestModel)
+        public async Task<IActionResult> CreateUser([FromBody]CreateUserRequestModel requestModel)
         {
             var result =  await _userHandler.CreateUser(requestModel);
+            
+            
             return new ObjectResult(result);
         }
-        
     }
 }

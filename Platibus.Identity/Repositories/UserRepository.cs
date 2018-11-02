@@ -21,6 +21,5 @@ namespace Platibus.Identity.Repositories
 
             return Task.FromResult(_users.Add(user));
         }
-
     }
-    }
+}
