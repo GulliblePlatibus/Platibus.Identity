@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using Platibus.Identity.CreateUserModels;
+using Platibus.Identity.Documents;
 using Platibus.Identity.Repositories;
 
 namespace Platibus.Identity.Handlers
 {
     public interface ICreateUserHandler
     {
-        Task<bool> CreateUser(CreateUserRequestModel createUserRequestModel);
+        Task<Response> CreateUser(CreateUserRequestModel createUserRequestModel);
     }
     
     public class CreateUserHandler : ICreateUserHandler 
@@ -18,9 +19,11 @@ namespace Platibus.Identity.Handlers
             _userRepository = userRepository;
         }
 
-        public async Task<bool> CreateUser(CreateUserRequestModel createUserRequestModel)
+        public async Task<Response> CreateUser(CreateUserRequestModel createUserRequestModel)
         {
-            return await _userRepository.createUser(createUserRequestModel);
+            await _userRepository.CreateUser(new User());
+
+            return Response.Successful();
         }
     }
 }

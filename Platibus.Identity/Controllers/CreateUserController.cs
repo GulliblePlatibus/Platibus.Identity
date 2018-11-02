@@ -22,6 +22,8 @@ namespace Platibus.Identity.Controllers
             var result =  await _userHandler.CreateUser(requestModel);
             
             
+            
+            
             return new ObjectResult(result);
         }
     }
