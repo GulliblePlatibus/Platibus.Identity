@@ -20,11 +20,13 @@ namespace Platibus.Identity.Controllers
         public async Task<IActionResult> CreateUser([FromBody]CreateUserRequestModel requestModel)
         {
             var result =  await _userHandler.CreateUser(requestModel);
-            
-            
-            
-            
-            return new ObjectResult(result);
+
+            if (!result.IsSuccessful)
+            {
+                return StatusCode(400, result.Message);
+            }
+
+            return StatusCode(200);
         }
     }
 }
