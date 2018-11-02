@@ -1,21 +1,35 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Npgsql;
 using Platibus.Identity.CreateUserModels;
+using Platibus.Identity.Documents;
 
 namespace Platibus.Identity.Repositories
 {
 
     public interface IUserRepository
     {
-        Task CreateUser(User user);
+        Task<Response> CreateUser(User user);
     }
+
     public class UserRepository : IUserRepository
     {
-        private static HashSet<User> _users = new HashSet<User>();
+        private readonly IConnectionString _connectionString;
 
-        public async Task CreateUser(User user)
+        public UserRepository(IConnectionString connectionString)
         {
-           
+            _connectionString = connectionString;
+        }
+            
+            
+        public async Task<Response> CreateUser(User user)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString.GetConnectionString()))
+            {
+                conn.Open();
+                
+            }
+            return null;
         }
     }
 }

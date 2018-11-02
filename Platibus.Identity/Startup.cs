@@ -54,6 +54,7 @@ namespace Platibus.Identity
              
             services.AddTransient<ICreateUserHandler,CreateUserHandler>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IConnectionString, IdentityServerSQlConfiq>();
 
         }
 
