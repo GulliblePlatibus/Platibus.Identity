@@ -47,12 +47,11 @@ namespace Platibus.Identity
             
 			services.AddMvc();
 
-			services.AddIdentityServer()
-					.AddDeveloperSigningCredential()
-			        .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
-					.AddInMemoryApiResources(IdentityConfig.GetApiResources())
-					.AddInMemoryClients(IdentityConfig.GetClients())
-			        .AddTestUsers(IdentityConfig.GetUsers());
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+                .AddInMemoryClients(IdentityConfig.GetClients());
              
             services.AddTransient<IUserHandler, UserHandler>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -71,7 +70,6 @@ namespace Platibus.Identity
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             //Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -87,7 +85,6 @@ namespace Platibus.Identity
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -95,10 +92,8 @@ namespace Platibus.Identity
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            //app.UseMvc();
+            app.UseMvc();
             
-			app.UseMvcWithDefaultRoute();
-
 			app.UseIdentityServer();
         }
     }

@@ -36,7 +36,7 @@
                 <span class="login100-form-title">
                     Member Login
                 </span>
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {encType = "multipart/form-data", id = "myform", name = "myform"}))
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {@class = "validate-form" ,encType = "multipart/form-data", id = "myform", name = "myform"}))
                 {
                     @Html.AntiForgeryToken()
                     <input type="hidden" value="@Html.ViewBag.ReturnUrl" id="ReturnUrl" name="ReturnUrl"/>

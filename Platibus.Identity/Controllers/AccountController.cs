@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Platibus.Identity.Handlers;
 using Platibus.Identity.ViewModels;
 
 namespace Platibus.Identity.Controllers
@@ -8,8 +10,11 @@ namespace Platibus.Identity.Controllers
     [Route("account")]
     public class AccountController : Controller
     {
-        public AccountController()
+        private readonly IUserHandler _userHandler;
+
+        public AccountController(IUserHandler userHandler)
         {
+            _userHandler = userHandler;
         }      
 
         /// <summary>
@@ -25,17 +30,46 @@ namespace Platibus.Identity.Controllers
             return View("~/Views/LoginView.cshtml");
         }
 
-
+        /// <summary>
+        /// Accept the login form from the view
+        /// </summary>
+        /// <param name="loginInputModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel loginInputModel)
         {
+            //Login the user
+            var response = await _userHandler.Login(loginInputModel.Email, loginInputModel.Password);
 
-            //Login!
-            await HttpContext.SignInAsync("1", "Ulsan");
-		    
-            return Redirect(loginInputModel.ReturnUrl);
+            if (response.IsSuccessful)
+            {
+                //Issue authentication cookie signed with the tempkey.RSA and bearing user info
+                await HttpContext.SignInAsync(response.Entity.ToString(), response.Entity.Email);
+                return Redirect(loginInputModel.ReturnUrl);
+            }
+            
+            //Show error msg... //TODO : Not done
+            var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl};
+            return View("~/Views/LoginView.cshtml");
+        }
+
+        
+        /// <summary>
+        /// The view to handle sign-outs
+        /// </summary>
+        /// <param name="logoutId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("logout")]
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            //Make sure the cookies get cleared if front end forgets
+            await HttpContext.SignOutAsync();
+            
+            //Return the login view right away so they may log in again.
+            return View("~/Views/LoginView.cshtml");
         }
     }
 }
