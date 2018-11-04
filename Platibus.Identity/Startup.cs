@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper.FluentMap;
+using Dapper.FluentMap.Dommel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,10 +54,18 @@ namespace Platibus.Identity
 					.AddInMemoryClients(IdentityConfig.GetClients())
 			        .AddTestUsers(IdentityConfig.GetUsers());
              
-            services.AddTransient<ICreateUserHandler,CreateUserHandler>();
+            services.AddTransient<IUserHandler, UserHandler>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IConnectionString, IdentityServerSQlConfiq>();
-
+            
+            //Settings for Dapper fluentmap 
+            // Multiple ID's
+            // https://github.com/henkmollema/Dommel
+            FluentMapper.Initialize(options =>
+            {
+                options.AddMap(new UserMap());
+                options.ForDommel();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,9 +95,9 @@ namespace Platibus.Identity
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc();
+            //app.UseMvc();
             
-			//app.UseMvcWithDefaultRoute();
+			app.UseMvcWithDefaultRoute();
 
 			app.UseIdentityServer();
         }

@@ -8,9 +8,9 @@ namespace Platibus.Identity.Controllers
     [Route("identity/users")]
     public class CreateUserController : Controller
     {
-        private readonly ICreateUserHandler _userHandler;
+        private readonly IUserHandler _userHandler;
 
-        public CreateUserController(ICreateUserHandler userHandler)
+        public CreateUserController(IUserHandler userHandler)
         {
             _userHandler = userHandler;
         }
