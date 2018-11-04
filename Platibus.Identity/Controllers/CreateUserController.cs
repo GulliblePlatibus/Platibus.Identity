@@ -6,11 +6,11 @@ using Platibus.Identity.Handlers;
 namespace Platibus.Identity.Controllers
 {
     [Route("identity/users")]
-    public class CreateUserController : Controller
+    public class UserController : Controller
     {
         private readonly IUserHandler _userHandler;
 
-        public CreateUserController(IUserHandler userHandler)
+        public UserController(IUserHandler userHandler)
         {
             _userHandler = userHandler;
         }

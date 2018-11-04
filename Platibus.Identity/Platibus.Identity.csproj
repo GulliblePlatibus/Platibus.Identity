@@ -26,8 +26,10 @@
     <Compile Remove="Controllers\HomeController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\css\site.css" />
-    <None Include="wwwroot\css\site.min.css" />
-    <None Include="Views\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\signin-redirect.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\signout-redirect.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot" />
   </ItemGroup>
 </Project>
