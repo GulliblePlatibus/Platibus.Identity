@@ -26,7 +26,7 @@ namespace Platibus.Identity.Controllers
                 return StatusCode(400, result.Message);
             }
 
-            return StatusCode(200);
+            return new ObjectResult(new {id = result.Entity.Id});
         }
     }
 }

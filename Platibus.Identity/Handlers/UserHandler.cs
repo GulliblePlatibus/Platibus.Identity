@@ -9,7 +9,7 @@ namespace Platibus.Identity.Handlers
 {
     public interface IUserHandler
     {
-        Task<Response> CreateUser(CreateUserRequestModel createUserRequestModel);
+        Task<ResponseWithModel<User>> CreateUser(CreateUserRequestModel createUserRequestModel);
         Task<ResponseWithModel<User>> Login(string email, string password);
     }
     
@@ -22,21 +22,31 @@ namespace Platibus.Identity.Handlers
             _userRepository = userRepository;
         }
 
-        public async Task<Response> CreateUser(CreateUserRequestModel createUserModel)
+        public async Task<ResponseWithModel<User>> CreateUser(CreateUserRequestModel createUserModel)
         {
             if (!EmailValidator.Validate(createUserModel.Email))
             {
-                return Response.Unsuccessful("This email does not uphold conventions");
-            } 
-            
-            return await _userRepository.CreateUser(new User
+                return ResponseWithModel<User>.Unsuccessful("This email does not uphold conventions");
+            }
+
+            //User to be inserted
+            var user = new User
             {
                 Id = Guid.NewGuid(),
-                Created = DateTime.UtcNow, 
+                Created = DateTime.UtcNow,
                 Email = createUserModel.Email.ToLower(),
                 LastLogin = DateTime.UtcNow,
                 Password = BCrypt.Net.BCrypt.HashPassword(createUserModel.Password)
-            });
+            };
+
+            var response = await _userRepository.CreateUser(user);
+
+            if (!response.IsSuccessful)
+            {
+                return ResponseWithModel<User>.Unsuccessful(response.Message);
+            }
+            
+            return ResponseWithModel<User>.Successfull(user);
         }
 
         public async Task<ResponseWithModel<User>> Login(string email, string password)
