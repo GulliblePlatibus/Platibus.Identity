@@ -74,7 +74,8 @@ namespace Platibus.Identity.Controllers
         {
             //Make sure the cookies get cleared if front end forgets
             await HttpContext.SignOutAsync();
-            
+
+            ViewBag.ReturnUrl = "Https://localhost:5001";
             //Return the login view right away so they may log in again.
             return View("~/Views/LoginView.cshtml");
         }
