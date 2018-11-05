@@ -27,7 +27,13 @@ namespace Platibus.Identity.Controllers
         public async Task<IActionResult> Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View("~/Views/LoginView.cshtml");
+            var vm = new LoginViewModel
+            {
+                Error = null,
+                ReturnUrl = returnUrl,
+                IsSuccessfull = true
+            };
+            return View("~/Views/LoginView.cshtml", vm);
         }
 
         /// <summary>
@@ -52,8 +58,8 @@ namespace Platibus.Identity.Controllers
             
             //Show error msg... //TODO : Not done
             //Show user error; example wrong login credentials  
-            var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl};
-            return View("~/Views/LoginView.cshtml");
+            var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl, IsSuccessfull = response.IsSuccessful };
+            return View("~/Views/LoginView.cshtml", vm);
         }
 
         
