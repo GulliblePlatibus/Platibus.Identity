@@ -16,6 +16,7 @@ namespace Platibus.Identity
             Map(x => x.Password).ToColumn("password");
             Map(x => x.Created).ToColumn("created");
             Map(x => x.LastLogin).ToColumn("lastlogin");
+            Map(x => x.AuthLevel).ToColumn("authlevel");
         }
     }
     
@@ -35,6 +36,8 @@ namespace Platibus.Identity
         
         //Date of last login
         public DateTime LastLogin { get; set; }
-        
+
+        //Level of clearance the User has
+        public int AuthLevel { get; set; }
     }
 }

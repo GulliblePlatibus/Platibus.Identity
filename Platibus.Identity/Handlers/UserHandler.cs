@@ -36,7 +36,9 @@ namespace Platibus.Identity.Handlers
                 Created = DateTime.UtcNow,
                 Email = createUserModel.Email.ToLower(),
                 LastLogin = DateTime.UtcNow,
-                Password = BCrypt.Net.BCrypt.HashPassword(createUserModel.Password)
+                Password = BCrypt.Net.BCrypt.HashPassword(createUserModel.Password),
+                AuthLevel = createUserModel.AuthLevel,
+                
             };
 
             var response = await _userRepository.CreateUser(user);

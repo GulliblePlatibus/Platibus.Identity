@@ -51,6 +51,7 @@ namespace Platibus.Identity.Controllers
             }
             
             //Show error msg... //TODO : Not done
+            //Show user error; example wrong login credentials  
             var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl};
             return View("~/Views/LoginView.cshtml");
         }
