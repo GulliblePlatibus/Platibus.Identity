@@ -29,7 +29,7 @@ namespace Platibus.Identity.Controllers
             ViewBag.ReturnUrl = returnUrl;
             var vm = new LoginViewModel
             {
-                Error = null,
+                Error = "",
                 ReturnUrl = returnUrl,
                 IsSuccessfull = true
             };
@@ -56,7 +56,8 @@ namespace Platibus.Identity.Controllers
                 return Redirect(loginInputModel.ReturnUrl);
             }
             
-            //Show user error; example wrong login credentials  
+            //Show user error; example wrong login credentials
+            ViewBag.ReturnUrl = loginInputModel.ReturnUrl;
             var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl, IsSuccessfull = response.IsSuccessful };
             return View("~/Views/LoginView.cshtml", vm);
         }
@@ -74,9 +75,10 @@ namespace Platibus.Identity.Controllers
             //Make sure the cookies get cleared if front end forgets
             await HttpContext.SignOutAsync();
 
-            ViewBag.ReturnUrl = "Https://localhost:5001";
+            ViewBag.ReturnUrl = "https://localhost:5020";
             //Return the login view right away so they may log in again.
-            return View("~/Views/LoginView.cshtml");
+            var vm = new LoginViewModel{Error = "", ReturnUrl = "", IsSuccessfull = true};
+            return View("~/Views/LoginView.cshtml", vm);
         }
     }
 }

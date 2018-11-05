@@ -39,7 +39,7 @@
                
              
                 
-                    <div hidden="@Model.IsSuccessfull" class="alert" style="border-radius: 25px"> <span class="closebtn" onclick="this.parentElement.style.display='none';"> &times; </span>  @Model.Error </div>
+                <div hidden="@Model.IsSuccessfull" class="alert" style="border-radius: 25px"> <span class="closebtn" onclick="this.parentElement.style.display='none';"> &times; </span>  @Model.Error </div>
                         
                 
                 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {@class = "validate-form" ,encType = "multipart/form-data", id = "myform", name = "myform"}))
