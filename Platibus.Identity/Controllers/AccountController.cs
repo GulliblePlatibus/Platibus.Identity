@@ -52,11 +52,10 @@ namespace Platibus.Identity.Controllers
             if (response.IsSuccessful)
             {
                 //Issue authentication cookie signed with the tempkey.RSA and bearing user info
-                await HttpContext.SignInAsync(response.Entity.ToString(), response.Entity.Email);
+                await HttpContext.SignInAsync(response.Entity.Id.ToString(), response.Entity.AuthLevel.ToString());
                 return Redirect(loginInputModel.ReturnUrl);
             }
             
-            //Show error msg... //TODO : Not done
             //Show user error; example wrong login credentials  
             var vm = new LoginViewModel{Error = response.Message, ReturnUrl = loginInputModel.ReturnUrl, IsSuccessfull = response.IsSuccessful };
             return View("~/Views/LoginView.cshtml", vm);
