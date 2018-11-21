@@ -4,6 +4,7 @@ using EmailValidation;
 using Platibus.Identity.CreateUserModels;
 using Platibus.Identity.Documents;
 using Platibus.Identity.Repositories;
+using Platibus.Identity.UpdateUserModel;
 
 namespace Platibus.Identity.Handlers
 {
@@ -11,6 +12,8 @@ namespace Platibus.Identity.Handlers
     {
         Task<ResponseWithModel<User>> CreateUser(CreateUserRequestModel createUserRequestModel);
         Task<ResponseWithModel<User>> Login(string email, string password);
+        Task<Response> UpdateUser(Guid id, UpdateUserRequestModel updateUserRequestModel);
+        Task<User> GetUser(Guid id);
     }
     
     public class UserHandler : IUserHandler 
@@ -49,6 +52,32 @@ namespace Platibus.Identity.Handlers
             }
             
             return ResponseWithModel<User>.Successfull(user);
+        }
+
+        //Only made so that user information can be retrieved for testing,
+        //Must be deleted before deployment of any kind!! :)
+        public async Task<User> GetUser(Guid id)
+        {
+            var user = await _userRepository.GetUser(id);
+
+            return user;
+        }
+
+        public async Task<Response> UpdateUser(Guid id, UpdateUserRequestModel updateUserRequestModel)
+        {
+            var user = await _userRepository.GetUser(id);
+
+            var newUser = new User
+            {
+                Id = user.Id,
+                Created = user.Created,
+                Email = updateUserRequestModel.Email,
+                LastLogin = user.LastLogin,
+                Password = BCrypt.Net.BCrypt.HashPassword(updateUserRequestModel.Password),
+                AuthLevel = user.AuthLevel,
+            };
+
+            return await _userRepository.UpdateUser(newUser);
         }
 
         public async Task<ResponseWithModel<User>> Login(string email, string password)
