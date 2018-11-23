@@ -74,7 +74,7 @@ namespace Platibus.Identity.Handlers
                 Email = updateUserRequestModel.Email,
                 LastLogin = user.LastLogin,
                 Password = BCrypt.Net.BCrypt.HashPassword(updateUserRequestModel.Password),
-                AuthLevel = user.AuthLevel,
+                AuthLevel = updateUserRequestModel.AuthLevel,
             };
 
             return await _userRepository.UpdateUser(newUser);

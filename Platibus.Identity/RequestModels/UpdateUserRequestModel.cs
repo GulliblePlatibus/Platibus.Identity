@@ -4,5 +4,6 @@ namespace Platibus.Identity.UpdateUserModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public int AuthLevel { get; set; }
     }
 }

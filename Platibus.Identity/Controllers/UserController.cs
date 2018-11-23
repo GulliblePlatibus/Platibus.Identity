@@ -35,14 +35,12 @@ namespace Platibus.Identity.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody]UpdateUserRequestModel requestModel)
         {
+            //apparently Guids can be made 'nullable', so a null check is made, although guid is a value type and thus cannot be null pr. default
+            if (id == Guid.Empty || id == null) return StatusCode(400);
+            
             var result = await _userHandler.UpdateUser(id, requestModel);
 
-            if (!result.IsSuccessful)
-            {
-                return StatusCode(400, result.Message);
-            }
-
-            return StatusCode(200, result.Message);
+            return StatusCode(!result.IsSuccessful ? 400 : 200, result.Message);
         }
 
         [HttpGet]

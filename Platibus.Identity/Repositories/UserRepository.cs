@@ -45,16 +45,6 @@ namespace Platibus.Identity.Repositories
             using(var conn = new NpgsqlConnection(_connectionString.GetConnectionString()))
             {
                 conn.Open();
-                
-                var result = await conn.QueryAsync<User>("SELECT * FROM Users WHERE email = " + "\'"+ user.Email + "\'");
-
-                if (result.Any())
-                {
-                    return Response.Unsuccessful("An account with this email already exists");
-                }
-
-                
-                
                 var response = await conn.UpdateAsync(user);
 
                 return Response.Successful();
