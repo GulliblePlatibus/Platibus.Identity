@@ -67,17 +67,14 @@ namespace Platibus.Identity.Handlers
         {
             var user = await _userRepository.GetUser(id);
 
-            var newUser = new User
-            {
-                Id = user.Id,
-                Created = user.Created,
-                Email = updateUserRequestModel.Email,
-                LastLogin = user.LastLogin,
-                Password = BCrypt.Net.BCrypt.HashPassword(updateUserRequestModel.Password),
-                AuthLevel = updateUserRequestModel.AuthLevel
-            };
-
-            return await _userRepository.UpdateUser(newUser);
+            if (!string.IsNullOrWhiteSpace(updateUserRequestModel.Password))
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserRequestModel.Password);
+            if (!string.IsNullOrWhiteSpace(updateUserRequestModel.Email))
+                user.Email = updateUserRequestModel.Email;
+            if (updateUserRequestModel.AuthLevel != 0)
+                user.AuthLevel = updateUserRequestModel.AuthLevel;
+            
+            return await _userRepository.UpdateUser(user);
         }
 
         public async Task<ResponseWithModel<User>> Login(string email, string password)
