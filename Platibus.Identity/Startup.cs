@@ -57,6 +57,8 @@ namespace Platibus.Identity
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IConnectionString, IdentityServerSQlConfiq>();
             
+            services.AddCors();
+            
             //Settings for Dapper fluentmap 
             // Multiple ID's
             // https://github.com/henkmollema/Dommel
@@ -92,7 +94,16 @@ namespace Platibus.Identity
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseCors(
+                options => 
+                    options.WithOrigins("https://localhost:5020").AllowAnyMethod()
+                    
+                
+            );
+            
             app.UseMvc();
+            
+            
             
 			app.UseIdentityServer();
         }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Platibus.Identity.Handlers;
@@ -30,7 +31,7 @@ namespace Platibus.Identity.Controllers
             var vm = new LoginViewModel
             {
                 Error = "",
-                ReturnUrl = returnUrl,
+                ReturnUrl ="https://localhost:5020/Booking/Booking_Index",
                 IsSuccessfull = true
             };
             return View("~/Views/LoginView.cshtml", vm);
@@ -53,6 +54,11 @@ namespace Platibus.Identity.Controllers
             {
                 //Issue authentication cookie signed with the tempkey.RSA and bearing user info
                 await HttpContext.SignInAsync(response.Entity.Id.ToString(), response.Entity.AuthLevel.ToString());
+                if (loginInputModel.ReturnUrl == null)
+                {
+                    return Redirect("https://localhost:5020/home");
+                }
+                
                 return Redirect(loginInputModel.ReturnUrl);
             }
             
@@ -70,6 +76,7 @@ namespace Platibus.Identity.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("logout")]
+        
         public async Task<IActionResult> Logout(string logoutId)
         {
             //Make sure the cookies get cleared if front end forgets

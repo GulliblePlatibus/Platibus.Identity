@@ -8,6 +8,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="3.1.0" />
     <PackageReference Include="Dapper.FluentMap.Dommel" Version="1.5.0" />
     <PackageReference Include="EmailValidation" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="IdentityServer4" Version="2.2.0" />

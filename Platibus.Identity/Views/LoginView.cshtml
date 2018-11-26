@@ -22,70 +22,86 @@
     <link rel="stylesheet" type="text/css" href="~/LoginView/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/LoginView/css/main.css">
     <!--===============================================================================================-->
+    
+    
+    
+    <!--AdminLTE-->
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/adminlte/components/bootstrap/dist/css/bootstrap.min.css">
+        
+        
+    <link rel="stylesheet" href="~/adminlte/components/bootstrap/less/bootstrap.less" asp-append-version="true"></link>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/adminlte/components/Ionicons/css/ionicons.min.css">
+    <!-- Pace style -->
+    <link rel="stylesheet" href="~/adminlte/plugins/pace/pace.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+    folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/skins/skin-blue-light.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body>
+<body class="hold-transition lockscreen" style="background-image: url('/adminlte/bg1.jpg') ; background-size: cover; ">
+<!-- Automatic element centering -->
+<div class="lockscreen-wrapper">
 
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <div class="login100-pic js-tilt" data-tilt>
-                <img src="~/LoginView/images/img-01.png" alt="IMG">
-            </div>
-            <div class="login100-form validate-form">
-                <input type="hidden" asp-for="ReturnUrl"/>
-                <span class="login100-form-title">
-                    Member Login
-                </span>
+<div class="login-box">
+    
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <div class="login-logo">
+            <a href="/"><b>Plati</b>Bus</a>
+        </div>
+        <p class="login-box-msg">Welcome to the Site's Portal</p>
+
+        <div class="login100-form validate-form">
+            <input type="hidden" asp-for="ReturnUrl"/>
+            <span class="login100-form-title">
                
+            </span>
+        
              
                 
-                <div hidden="@Model.IsSuccessfull" class="alert" style="border-radius: 25px"> <span class="closebtn" onclick="this.parentElement.style.display='none';"> &times; </span>  @Model.Error </div>
+        <div hidden="@Model.IsSuccessfull" class="alert" style="border-radius: 25px"> <span class="closebtn" onclick="this.parentElement.style.display='none';"> &times; </span>  @Model.Error </div>
                         
                 
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {@class = "validate-form" ,encType = "multipart/form-data", id = "myform", name = "myform"}))
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new {@class = "validate-form", encType = "multipart/form-data", id = "myform", name = "myform"}))
                 {
                     @Html.AntiForgeryToken()
                     <input type="hidden" value="@Html.ViewBag.ReturnUrl" id="ReturnUrl" name="ReturnUrl"/>
-                <div class="wrap-input100 validate-input form-group" data-validate="Valid email is required: ex@abc.xyz">
-                    <input class="input100 form-control" id="email" name="email" type="text" placeholder="Email">
-                    <span class="focus-input100"></span>
-                    <span class="symbol-input100">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </span>
-                </div>
-                <div class="wrap-input100 validate-input" data-validate="Password is required">
-                    <input class="input100 form-control" id="password" name="password" type="password" placeholder="Password">
-                    <span class="focus-input100"></span>
-                    <span class="symbol-input100">
-                        <i class="fa fa-lock" aria-hidden="true"></i>
-                    </span>
-                </div>
 
-                <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" type="submit">
-                        Login
-                    </button>
-                </div>
+                    <input type="hidden" asp-for="ReturnUrl"/>
+                    <div class="form-group has-feedback" data-validate="Valid email is required: ex@abc.xyz">
+                        <label></label>
+                        <input class="form-control" id="email" name="email" type="text" placeholder="Email"/>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <span class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group has-feedback" data-validate="Password is required">
+                        <input type="password"  class="form-control" placeholder="Password" id="password" name="password"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 }
-                <div class="text-center p-t-12">
-                    <span class="txt1">
-                        Forgot
-                    </span>
-                    <a type="hidden" class="txt2" href="#">
-                        Username / Password?
-                    </a>
-                </div>
-                <div class="text-center p-t-136">
-                    <a class="txt2" href="#">
-                        Create your Account
-                        <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-                    </a>
-                </div>
+        </div>
             </div>
         </div>
-    </div>
-</div>
 
+</div>
 
 <!--===============================================================================================-->
 <script src="~/LoginView/vendor/jquery/jquery-3.2.1.min.js"></script>
