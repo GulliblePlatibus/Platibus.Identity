@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Dapper.FluentMap.Dommel.Mapping;
+using Platibus.Identity.Helpers;
 
 namespace Platibus.Identity
 {
@@ -38,6 +39,6 @@ namespace Platibus.Identity
         public DateTime LastLogin { get; set; }
 
         //Level of clearance the User has
-        public int AuthLevel { get; set; }
+        public UserRoles AuthLevel { get; set; }
     }
 }
