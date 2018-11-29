@@ -54,6 +54,7 @@ namespace Platibus.Identity.Controllers
             {
                 //Issue authentication cookie signed with the tempkey.RSA and bearing user info
                 await HttpContext.SignInAsync(response.Entity.Id.ToString(), response.Entity.AuthLevel.ToString());
+                
                 if (loginInputModel.ReturnUrl == null)
                 {
                     return Redirect("https://localhost:5020/home");
@@ -80,7 +81,11 @@ namespace Platibus.Identity.Controllers
         public async Task<IActionResult> Logout(string logoutId)
         {
             //Make sure the cookies get cleared if front end forgets
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync("idsrv.session");
+
+            
+            await HttpContext.SignOutAsync("idsrv");
+            
 
             ViewBag.ReturnUrl = "https://localhost:5020";
             //Return the login view right away so they may log in again.
