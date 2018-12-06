@@ -12,6 +12,11 @@ namespace Platibus.Identity
 {
     public class Program
     {
+        
+        public static IHostingEnvironment HostingEnvironment { get; set; }
+        public static IConfiguration Configuration { get; set; }
+        
+        
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
@@ -19,6 +24,11 @@ namespace Platibus.Identity
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    HostingEnvironment = hostingContext.HostingEnvironment;
+                    Configuration = config.Build();
+                })
                 .UseStartup<Startup>();
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.Test;
 using IdentityModel;
 using Platibus.Identity.Handlers;
+using Platibus.Identity.Helpers;
 using Platibus.Identity.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -21,16 +22,21 @@ namespace Platibus.Identity
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _environment;
+        
+        public Startup(IHostingEnvironment env, IConfiguration config)
         {
-            Configuration = configuration;
+            _configuration = config;
+            _environment = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<WebAppConfiguration>(
+                _configuration.GetSection(nameof(WebAppConfiguration)));
+            
             //For fun swagger settings...
             services.AddSwaggerGen(c =>
             {
@@ -47,11 +53,13 @@ namespace Platibus.Identity
             
 			services.AddMvc();
 
+            var webAppConfig = _configuration.GetSection(nameof(WebAppConfiguration)).Get<WebAppConfiguration>();
+
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-                .AddInMemoryClients(IdentityConfig.GetClients());
+                .AddInMemoryClients(IdentityConfig.GetClients(webAppConfig.WebsiteUrl));
              
             services.AddTransient<IUserHandler, UserHandler>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -90,15 +98,16 @@ namespace Platibus.Identity
                 app.UseHsts();
             }
 
+            var webAppConfig = _configuration.GetSection(nameof(WebAppConfiguration)).Get<WebAppConfiguration>();
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseCors(
                 options => 
-                    options.WithOrigins("https://localhost:5020").AllowAnyMethod()
+                    options.WithOrigins(webAppConfig.WebsiteUrl).AllowAnyMethod()
                     
-                
             );
             
             app.UseMvc();

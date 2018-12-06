@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Platibus.Identity.Handlers;
+using Platibus.Identity.Helpers;
 using Platibus.Identity.ViewModels;
 
 namespace Platibus.Identity.Controllers
@@ -12,10 +14,12 @@ namespace Platibus.Identity.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHandler _userHandler;
+        private readonly IOptions<WebAppConfiguration> _config;
 
-        public AccountController(IUserHandler userHandler)
+        public AccountController(IUserHandler userHandler, IOptions<WebAppConfiguration> config)
         {
             _userHandler = userHandler;
+            _config = config;
         }      
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace Platibus.Identity.Controllers
             var vm = new LoginViewModel
             {
                 Error = "",
-                ReturnUrl ="https://localhost:5020/Booking/Booking_Index",
+                ReturnUrl = $"{_config.Value.WebsiteUrl}/Booking/Booking_Index",
                 IsSuccessfull = true
             };
             return View("~/Views/LoginView.cshtml", vm);
@@ -57,7 +61,7 @@ namespace Platibus.Identity.Controllers
                 
                 if (loginInputModel.ReturnUrl == null)
                 {
-                    return Redirect("https://localhost:5020/home");
+                    return Redirect($"{_config.Value.WebsiteUrl}/home");
                 }
                 
                 return Redirect(loginInputModel.ReturnUrl);
@@ -87,7 +91,7 @@ namespace Platibus.Identity.Controllers
             await HttpContext.SignOutAsync("idsrv");
             
 
-            ViewBag.ReturnUrl = "https://localhost:5020";
+            ViewBag.ReturnUrl = _config.Value.WebsiteUrl;
             //Return the login view right away so they may log in again.
             var vm = new LoginViewModel{Error = "", ReturnUrl = "", IsSuccessfull = true};
             return View("~/Views/LoginView.cshtml", vm);

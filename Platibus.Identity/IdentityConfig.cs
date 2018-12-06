@@ -16,7 +16,7 @@ namespace Platibus.Identity
 			};
 		}
 
-		public static IEnumerable<Client> GetClients()
+		public static IEnumerable<Client> GetClients(string websiteUrl)
 		{
 			return new List<Client>
 			{
@@ -52,11 +52,11 @@ namespace Platibus.Identity
 
                     
                     //Where to redirect to after login
-					RedirectUris = {"https://localhost:5020/signin-oidc"},
+					RedirectUris = {$"{websiteUrl}/signin-oidc"},
 
 					
                     //Where to redirect to after logout
-					PostLogoutRedirectUris = {"https://localhost:5020/signout-callback-oidc"},
+					PostLogoutRedirectUris = {$"{websiteUrl}/signout-callback-oidc"},
 					RequireConsent = false,
 					
 					AllowedScopes = new List<string>
