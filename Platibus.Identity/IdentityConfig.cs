@@ -54,6 +54,7 @@ namespace Platibus.Identity
                     //Where to redirect to after login
 					RedirectUris = {"https://localhost:5020/signin-oidc"},
 
+					
                     //Where to redirect to after logout
 					PostLogoutRedirectUris = {"https://localhost:5020/signout-callback-oidc"},
 					RequireConsent = false,
