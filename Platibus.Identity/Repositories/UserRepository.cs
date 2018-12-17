@@ -21,6 +21,7 @@ namespace Platibus.Identity.Repositories
         Task<User> Login(string email);
         Task<Response> UpdateUser(User user);
         Task<User> GetUser(Guid id);
+        Task<Response> DeleteUser(Guid id);
     }
     
     public class UserRepository : IUserRepository
@@ -30,6 +31,16 @@ namespace Platibus.Identity.Repositories
         public UserRepository(IConnectionString connectionString)
         {
             _connectionString = connectionString;
+        }
+
+        public async Task<Response> DeleteUser(Guid id)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString.GetConnectionString()))
+            {
+                conn.Open();
+                var response = conn.Delete(id);
+                return Response.Successful(); 
+            }
         }
 
         public async Task<User> GetUser(Guid id)

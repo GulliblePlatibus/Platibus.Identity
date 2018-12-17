@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using EmailValidation;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Platibus.Identity.CreateUserModels;
 using Platibus.Identity.Documents;
 using Platibus.Identity.Repositories;
@@ -14,6 +15,7 @@ namespace Platibus.Identity.Handlers
         Task<ResponseWithModel<User>> Login(string email, string password);
         Task<Response> UpdateUser(Guid id, UpdateUserRequestModel updateUserRequestModel);
         Task<User> GetUser(Guid id);
+        Task<Response> DeleteUser(Guid id);
     }
     
     public class UserHandler : IUserHandler 
@@ -61,6 +63,11 @@ namespace Platibus.Identity.Handlers
             var user = await _userRepository.GetUser(id);
 
             return user;
+        }
+
+        public async Task<Response> DeleteUser(Guid id)
+        {
+            return await _userRepository.DeleteUser(id); 
         }
 
         public async Task<Response> UpdateUser(Guid id, UpdateUserRequestModel updateUserRequestModel)

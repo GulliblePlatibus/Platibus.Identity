@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Platibus.Identity.CreateUserModels;
 using Platibus.Identity.Handlers;
 using Platibus.Identity.UpdateUserModel;
@@ -49,6 +50,15 @@ namespace Platibus.Identity.Controllers
         {
             var result = await _userHandler.GetUser(id);
             
+            return new ObjectResult(result);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            var result = await _userHandler.DeleteUser(id);
+
             return new ObjectResult(result);
         }
     }
